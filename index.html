@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apex Drive — автошкола и 3D-тренажёр ПДД</title>
+  <meta name="description" content="Автошкола Apex Drive: 1351 вопрос ПДД в 68 блоках, экзамен 18 из 20 с таймером, разбор каждой ошибки, тренировка слабых тем и 3D-разбор устройства автомобиля." />
+  <meta name="theme-color" content="#0A0B0D" />
+  <meta name="color-scheme" content="dark" />
+  <meta property="og:title" content="Apex Drive — автошкола и 3D-тренажёр ПДД" />
+  <meta property="og:description" content="1351 вопрос ПДД, экзамен 18 из 20 с таймером, разбор ошибок и exploded-view автомобиля." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0B0D'/%3E%3Cpath d='M9 24 16 7l7 17h-3.4l-1.3-3.6h-4.6L12.4 24H9zm6.1-6.4h3.8L17.1 13l-2 4.6z' fill='%23D9F99D'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#categories" data-i18n="a11y.skip">К разделам</a>
+
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-moto" viewBox="0 0 24 24">
+      <circle cx="5.2" cy="16.4" r="3.2" /><circle cx="18.8" cy="16.4" r="3.2" />
+      <path d="M5.2 16.4l3.1-5.9h5.4l2.3 5.9M8.6 10.5l3.7-3.2h2.9M13.9 7.3l2.4 3.2h1.4" />
+      <path d="M15.4 8.2h3.1" />
+    </symbol>
+    <symbol id="i-car" viewBox="0 0 24 24">
+      <path d="M3.4 14.2l1.5-4.3a2 2 0 0 1 1.9-1.3h10.4a2 2 0 0 1 1.9 1.3l1.5 4.3v3.2h-2.2M5.6 17.4H3.4v-3.2h17.2" />
+      <circle cx="7.3" cy="17.4" r="1.7" /><circle cx="16.7" cy="17.4" r="1.7" />
+      <path d="M9 17.4h5.7" />
+    </symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24">
+      <path d="M2.8 6.4h11.4v9.8H2.8zM14.2 9.6h3.6l3.1 3.4v3.2h-6.7" />
+      <circle cx="6.4" cy="17.6" r="1.7" /><circle cx="17.4" cy="17.6" r="1.7" />
+    </symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3.3" />
+      <path d="M12 4.3v2.2M12 17.5v2.2M4.3 12h2.2M17.5 12h2.2M6.6 6.6l1.6 1.6M15.8 15.8l1.6 1.6M17.4 6.6l-1.6 1.6M8.2 15.8l-1.6 1.6" />
+      <circle cx="12" cy="12" r="8" />
+    </symbol>
+    <symbol id="i-aid" viewBox="0 0 24 24">
+      <path d="M9.4 3.8h5.2v5.6h5.6v5.2h-5.6v5.6H9.4v-5.6H3.8V9.4h5.6z" />
+    </symbol>
+    <symbol id="i-sign" viewBox="0 0 24 24">
+      <path d="M12 3.2l9 16.1H3z" /><path d="M12 8.6v5.2M12 16.5v.4" />
+    </symbol>
+    <symbol id="i-junction" viewBox="0 0 24 24">
+      <path d="M12 3v18M3 12h18" /><path d="M9.4 6.1L12 3l2.6 3.1M17.9 9.4L21 12l-3.1 2.6M9.4 17.9L12 21l2.6-3.1M6.1 9.4L3 12l3.1 2.6" />
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.6l4.8 4.8L19.8 6.9" /></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24">
+      <circle cx="12" cy="13.4" r="7.4" /><path d="M12 9.4v4.2l2.6 1.7M9.4 2.8h5.2M12 2.8v3.2" />
+    </symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.6 21V3.6M5.6 4.4h12.8l-2.6 4 2.6 4H5.6" /></symbol>
+    <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M4.2 12a7.8 7.8 0 1 1 2.6 5.8M4.2 17.4V12h5.4" /></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M14 6.8L19.4 12 14 17.2" /></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.8l2.2 6.1 6.1 2.2-6.1 2.2L12 19.4l-2.2-6.1-6.1-2.2 6.1-2.2z" /></symbol>
+  </svg>
+
+  <header class="top">
+    <a class="brand" href="#top" aria-label="Apex Drive">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span class="brand-text">
+        <strong>Apex Drive</strong>
+        <small data-i18n="brand.sub">driving academy</small>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a href="#categories" data-i18n="nav.categories">Категории</a>
+      <a href="#exam" data-i18n="nav.exam">Экзамен</a>
+      <a href="#vehicle" data-i18n="nav.vehicle">3D-разбор</a>
+      <a href="#progress" data-i18n="nav.progress">Прогресс</a>
+    </nav>
+
+    <div class="top-actions">
+      <span class="level-pill" id="levelPill">Junior</span>
+      <button class="lang-btn" id="langToggle" type="button">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero-veil" aria-hidden="true"></div>
+
+      <div class="wrap hero-inner">
+        <p class="eyebrow" data-i18n="hero.eyebrow">Apex Drive · 1351 вопрос · экзамен 18/20</p>
+        <h1>
+          <span data-i18n="hero.titleA">Дорога начинается</span><br />
+          <em data-i18n="hero.titleB">с решения</em>
+        </h1>
+        <p class="lead" data-i18n="hero.lead">
+          Полный банк ПДД в 68 блоках, экзамен с таймером и разбором каждой ошибки.
+          Устройство автомобиля — на интерактивной 3D-модели, где каждая деталь объясняет,
+          почему машина едет, тормозит и ломается.
+        </p>
+
+        <div class="hero-cta">
+          <button class="btn btn-primary" id="heroExam" type="button" data-i18n="hero.ctaExam">Сдать пробный экзамен</button>
+          <a class="btn btn-ghost" href="#vehicle" data-i18n="hero.ctaVehicle">Разобрать автомобиль</a>
+        </div>
+
+        <dl class="hero-stats" id="heroStats"></dl>
+      </div>
+
+      <div class="hero-tag" aria-hidden="true">
+        <span class="dot"></span>
+        <span data-i18n="hero.tag">ЭКЗАМЕН · 20 ВОПРОСОВ · 20 МИНУТ</span>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="wrap">
+        <header class="section-head">
+          <div>
+            <p class="kicker" data-i18n="sec.categories.kicker">01 / Программа</p>
+            <h2 data-i18n="sec.categories.title">Семь направлений — один экзамен</h2>
+          </div>
+          <p class="section-note" data-i18n="sec.categories.lead">
+            Карточки собраны из данных: категории прав, теория, практика и 3D-разбор.
+            Внутри — темы занятий, правила экзамена и тренировка по вопросам.
+          </p>
+        </header>
+        <div class="cat-grid" id="catGrid"></div>
+      </div>
+    </section>
+
+    <section class="section exam-section" id="exam">
+      <div class="wrap">
+        <header class="section-head">
+          <div>
+            <p class="kicker" data-i18n="sec.exam.kicker">02 / Экзамен</p>
+            <h2 data-i18n="sec.exam.title">20 вопросов. 20 минут. 18 верных.</h2>
+          </div>
+          <p class="section-note" data-i18n="sec.exam.lead">
+            Ошибки не исчезают: каждая попадает в разбор и в слабые темы.
+            Пересдача собирает новый билет из банка.
+          </p>
+        </header>
+
+        <div class="exam-shell">
+          <div class="exam-main" id="examHost" aria-live="polite"></div>
+
+          <aside class="exam-aside">
+            <div class="aside-card">
+              <p class="aside-label" data-i18n="exam.rulesTitle">Правила экзамена</p>
+              <ul class="rule-list">
+                <li data-i18n="exam.rule1">20 вопросов из банка, по одному на экран.</li>
+                <li data-i18n="exam.rule2">20 минут; таймер не останавливается при переключении вкладки.</li>
+                <li data-i18n="exam.rule3">Сдать можно с 18 верными ответами из 20.</li>
+                <li data-i18n="exam.rule4">Ответ нельзя изменить после подтверждения.</li>
+              </ul>
+            </div>
+
+            <div class="aside-card">
+              <p class="aside-label" data-i18n="exam.bankTitle">Банк вопросов</p>
+              <div class="bank-meta">
+                <span><b id="bankQuestions">1351</b> <span data-i18n="exam.questions">вопросов</span></span>
+                <span><b id="bankBlocks">68</b> <span data-i18n="exam.blocks">блоков</span></span>
+                <span><b id="bankExplained">966</b> <span data-i18n="exam.explained">с разбором</span></span>
+              </div>
+              <label class="field">
+                <span data-i18n="exam.lang">Язык билетов</span>
+                <select id="bankLang">
+                  <option value="ru">Русский</option>
+                  <option value="uzb">O‘zbekcha</option>
+                  <option value="uzc">Ўзбекча</option>
+                </select>
+              </label>
+              <p class="aside-hint" data-i18n="exam.langHint">Язык билета можно сменить до старта; во время попытки он заблокирован.</p>
+            </div>
+
+            <div class="aside-card aside-card--accent">
+              <svg class="aside-icon" aria-hidden="true"><use href="#i-spark"></use></svg>
+              <p data-i18n="exam.asideNote">
+                Вопросы с иллюстрацией открываются вместе с изображением.
+                Разбор ссылается на пункт ПДД, а не просто показывает верный вариант.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section vehicle-section" id="vehicle">
+      <div class="wrap">
+        <header class="section-head">
+          <div>
+            <p class="kicker" data-i18n="sec.vehicle.kicker">03 / Устройство</p>
+            <h2 data-i18n="sec.vehicle.title">Автомобиль в разрезе</h2>
+          </div>
+          <p class="section-note" data-i18n="sec.vehicle.lead">
+            Exploded-view модель: потяните сцену, чтобы обойти машину, нажмите на деталь
+            или узел в списке. Каждый узел — с ресурсом, признаками износа и ценой ошибки.
+          </p>
+        </header>
+
+        <div class="vehicle-shell">
+          <div class="vehicle-stage">
+            <canvas id="vehicleCanvas" aria-hidden="true"></canvas>
+            <div class="hotspot-host" id="hotspotHost"></div>
+            <div class="vehicle-hud">
+              <button class="btn btn-small" id="explodeBtn" type="button">
+                <svg aria-hidden="true"><use href="#i-spark"></use></svg>
+                <span data-i18n="vehicle.explode">Разобрать</span>
+              </button>
+              <span class="hint" data-i18n="vehicle.drag">Потяните, чтобы повернуть</span>
+            </div>
+            <p class="vehicle-caption" data-i18n="vehicle.caption">Apex Drive · процедурная модель · 6 узлов</p>
+          </div>
+
+          <aside class="vehicle-panel">
+            <div class="part-detail" id="partPanel"></div>
+            <div class="part-list" id="partList"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="progress">
+      <div class="wrap">
+        <header class="section-head">
+          <div>
+            <p class="kicker" data-i18n="sec.progress.kicker">04 / Прогресс</p>
+            <h2 data-i18n="sec.progress.title">Уровень, ошибки и экзамены</h2>
+          </div>
+          <button class="btn btn-ghost btn-small" id="resetProgress" type="button" data-i18n="progress.reset">Сбросить прогресс</button>
+        </header>
+
+        <div class="progress-grid" id="progressGrid"></div>
+
+        <div class="progress-cols">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="progress.history">История экзаменов</h3>
+              <span class="panel-note" data-i18n="progress.lastFive">последние 5</span>
+            </div>
+            <div id="examHistory"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="progress.weak">Слабые темы</h3>
+              <span class="panel-note" id="weakCount">0</span>
+            </div>
+            <div id="weakList"></div>
+            <button class="btn btn-primary btn-small" id="reviewWeak" type="button" data-i18n="progress.reviewWeak">Повторить ошибки</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© 2026 Apex Drive · <span data-i18n="footer.note">автономная платформа автошколы</span></span>
+      <span class="mono">RU / EN · 1351 × 3</span>
+    </div>
+  </footer>
+
+  <dialog class="cat-dialog" id="catDialog">
+    <div class="dialog-inner">
+      <button class="dialog-close" id="dialogClose" type="button" aria-label="Close">
+        <svg aria-hidden="true"><use href="#i-x"></use></svg>
+      </button>
+      <div id="dialogBody"></div>
+    </div>
+  </dialog>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
